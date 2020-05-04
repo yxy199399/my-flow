@@ -161,8 +161,18 @@ export default {
         });
 
         // 连线右击
-        this.jsPlumb.bind("contextmenu", evt => {
-          console.log("contextmenu", evt);
+        this.jsPlumb.bind("contextmenu", (evt, e) => {
+          let event = e || window.event;
+          event.preventDefault();
+          this.$confirm("确定删除所点击的线吗?", "提示", {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning"
+          })
+            .then(() => {
+              this.jsPlumb.deleteConnection(evt);
+            })
+            .catch(() => {});
         });
 
         // 连线
